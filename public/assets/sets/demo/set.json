@@ -1,0 +1,31 @@
+{
+  "uuid": "c1ce32d1-27e0-4d06-a887-0fe32030d23a",
+  "name": "Demo",
+  "decks": {
+    "main": {
+      "uuid": "e24b2d4c-0144-4475-8642-458a196ed70b",
+      "back": "back.png",
+      "cards": {
+        "a": "a.png",
+        "b": "b.png"
+      },
+      "rules": {
+        "stack": {
+          "minCards": 2,
+          "maxCards": false,
+          "canCut": true,
+          "canShuffle": true,
+          "canMove": true,
+          "canRotate": true
+        },
+        "card": {
+          "canFlip": true,
+          "canMove": true,
+          "canRotate": true,
+          "canPutInHand": true,
+          "canStack": true
+        }
+      }
+    }
+  }
+}
