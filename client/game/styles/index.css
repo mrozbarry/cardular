@@ -7,3 +7,17 @@ body {
 body {
   margin: 0;
 }
+
+.card {
+  position: absolute;
+  width: 180px;
+  height: 280px;
+  border: 1px rgb(120, 120, 120) solid;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover,
+.card--held {
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}

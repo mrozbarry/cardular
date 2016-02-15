@@ -1,12 +1,16 @@
 import React from 'react'
-import _ from 'lodash'
 import Card from './Card'
 
 const { array, func } = React.PropTypes
 
 export default React.createClass({
   propTypes: {
-    cards: array.isRequired
+    cards: array.isRequired,
+    moveCard: func.isRequired,
+    flipCard: func.isRequired,
+    touchCard: func.isRequired,
+    beginDrag: func.isRequired,
+    endAllDrags: func.isRequired
   },
 
   getSvgStyle: function () {
@@ -16,17 +20,36 @@ export default React.createClass({
     }
   },
 
+  onDragOver: function (e) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  },
+
   render: function () {
     return (
-      <svg width='100%' height='100%' viewPort='0 0 1920 1080' version='1.1' style={this.getSvgStyle()}>
-        {this.renderCards(this.props.cards)}
-      </svg>
+      <div
+        width='100%'
+        height='100%'
+        style={ this.getSvgStyle() }
+        onDragOver={ this.onDragOver }>
+        { this.renderCards(this.props.cards) }
+      </div>
     )
   },
 
   renderCards: function(cards) {
     return cards.map((card, idx) => {
-      return <Card key={card.uuid} card={card} />
+      return (
+        <Card
+          key={ card.uuid }
+          card={ card }
+          moveCard={ this.props.moveCard }
+          flipCard={ this.props.flipCard }
+          touchCard={ this.props.touchCard }
+          beginDrag={ this.props.beginDrag }
+          endAllDrags={ this.props.endAllDrags }
+          />
+      )
     })
   }
 })

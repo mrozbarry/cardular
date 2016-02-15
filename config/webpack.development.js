@@ -7,11 +7,11 @@ module.exports = {
 
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.resolve(__dirname, '..', 'client', 'game', 'index.js')
+    path.join(__dirname, '..', 'client', 'game', 'index.js')
   ],
 
   output: {
-    path: path.resolve(__dirname, '..', 'public'),
+    path: path.join(__dirname, '..', 'public'),
     publicPath: '',
     filename: 'entry.js'
   },

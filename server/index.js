@@ -9,7 +9,7 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 
-const rootPath = path.resolve(__dirname, '..', 'public')
+const rootPath = path.join(__dirname, '..', 'public')
 
 app.use(express.static(rootPath));
 
@@ -17,7 +17,6 @@ if (isDeveloping) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
     publicPath: config.output.publicPath,
-    // contentBase: rootPath,
     stats: {
       colors: true,
       hash: false,
@@ -31,33 +30,17 @@ if (isDeveloping) {
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
 
-  app.get('/admin*', function response(req, res) {
-    res.write(
-      middleware.fileSystem.readFileSync(
-        path.resolve(rootPath, 'public', 'admin.html')
-      )
-    );
-
-    res.end();
-  });
-
   app.get('*', function response(req, res) {
-    res.write(
-      middleware.fileSystem.readFileSync(
-        path.resolve(rootPath, 'public', 'index.html')
-      )
-    );
+    const defaultFile = path.join(rootPath, 'index.html')
 
+    res.write(middleware.fileSystem.readFileSync(defaultFile));
     res.end();
   });
 
 } else {
-  app.get('/admin*', function () {
-    res.sendFile(path.resolve(rootPath, 'admin.html'));
-  })
-
   app.get('*', function response(req, res) {
-    res.sendFile(path.resolve(rootPath, 'index.html'));
+    const defaultFile = path.join(rootPath, 'index.html')
+    res.sendFile(defaultFile);
   });
 }
 
