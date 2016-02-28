@@ -1,10 +1,11 @@
-import App from './App'
 import React from 'react'
+import Firebase from 'firebase'
 import ReactDOM from 'react-dom'
+import App from './App'
 
-const mountGame = (props, dom) => {
-  require('./styles/index.css')
+const firebaseConf = require('../../firebase.json')
 
+const mountRouter = (props, dom) => {
   props = props || {}
   ReactDOM.render(
     <App {...props} />,
@@ -15,9 +16,14 @@ const mountGame = (props, dom) => {
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.createElement('div')
   document.body.appendChild(container)
-  mountGame({
-    sets: [
-      "/assets/sets/demo"
-    ]
+
+  const firebase = new Firebase([
+    'https://',
+    firebaseConf.firebase,
+    '.firebaseio.com'
+  ].join(''))
+
+  mountRouter({
+    database: firebase
   }, container)
 })

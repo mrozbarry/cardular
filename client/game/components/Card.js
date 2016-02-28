@@ -4,9 +4,11 @@ const { object, func } = React.PropTypes
 
 export default React.createClass({
   propTypes: {
+    me: object.isRequired,
     card: object.isRequired,
-    moveCard: func.isRequired,
-    flipCard: func.isRequired
+    flipCard: func.isRequired,
+    touchCard: func.isRequired,
+    drag: object
   },
 
   transformString: function (name, params) {
@@ -25,43 +27,6 @@ export default React.createClass({
     ].join(' ')
   },
 
-  onDragStart: function (e) {
-    if (this.props.beginDrag(this.props.card.uuid) === false) {
-      e.preventDefault()
-      return
-    }
-
-    let bounds = e.target.getBoundingClientRect()
-
-    this.dragOffset = {
-      x: e.pageX - bounds.left,
-      y: e.pageY - bounds.top
-    }
-
-    e.target.style.opacity = '0.4'
-
-    e.dataTransfer.effectAllowed = 'move'
-  },
-
-  onDragEnd: function (e) {
-    // TODO: Firefox does not do the right thing here.
-    e.persist()
-    console.log('drag end', e)
-    const eventX = e.clientX
-    const eventY = e.clientY
-    const x = eventX - this.dragOffset.x
-    const y = eventY - this.dragOffset.y
-    // console.log('onDragEnd offset', {
-    //   offset: this.dragOffset,
-    //   event: { x: eventX, y: eventY },
-    //   corrected: { x: x, y: y }
-    // })
-    e.target.style.opacity = '1.0'
-    console.log('drag end', x, y)
-    this.props.moveCard(this.props.card.uuid, x, y)
-    this.props.endAllDrags()
-  },
-
   onDoubleClick: function (e) {
     this.props.flipCard(this.props.card.uuid)
   },
@@ -71,6 +36,10 @@ export default React.createClass({
       clearTimeout(this.touchTimeout)
     }
     this.touchTimeout = null
+  },
+
+  onMouseDown: function (e) {
+    console.log('Card -> mouse down')
   },
 
   onMouseOver: function (e) {
@@ -84,32 +53,44 @@ export default React.createClass({
     this.cancelTouch()
   },
 
+  onClick: function (e) {
+    console.log(' -- What do you want to do with this card')
+  },
+
   componentDidMount: function () {
     this.touchTimeout = null
-
-    this.dragOffset = {
-      x: 0,
-      y: 0
-    }
   },
+
+  rgbToCssString: function (rgb, alpha) {
+    alpha = alpha || 1
+    return `rgba(${ rgb.r }, ${ rgb.g }, ${ rgb.b }, ${ alpha })`
+  },
+
+  // getCardStyles: function () {
+  //   if (this.props.drag) {
+  //     return {
+  //       boxShadow: `0 0 30px ${  }, inset 0 0 30px rgba(81, 203, 238, 0.5)`
+  //     }
+  //   }
+  //   return null
+  // },
 
   render: function () {
     const { card } = this.props
-    const href = card.flipped ? card.front : card.back
+    const cardImage = card.flipped ? card.front : card.back
 
     return (
-      <img
-        className='card'
-        src={ href }
-        alt={ card.text }
-        title={ card.text }
-        style={ { transform: `rotateZ(${card.rotation}deg)`, left: card.x, top: card.y } }
-        onDragStart={ this.onDragStart }
-        onDragEnd={ this.onDragEnd }
-        onDoubleClick={ this.onDoubleClick }
+      <image
+        className={ 'card' }
+        xlinkHref={ cardImage }
+        x={ card.x }
+        y={ card.y }
+        width={ card.size[0] }
+        height={ card.size[1] }
         onMouseOver={ this.onMouseOver }
         onMouseOut={ this.onMouseOut }
-        draggable
+        onClick={ this.onClick }
+        onMouseDown={ this.onMouseDown }
         />
     )
   }

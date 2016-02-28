@@ -1,53 +1,51 @@
 import React from 'react'
 import Card from './Card'
+import _ from 'lodash'
 
-const { array, func } = React.PropTypes
+const { object, array, func } = React.PropTypes
 
 export default React.createClass({
   propTypes: {
     cards: array.isRequired,
-    moveCard: func.isRequired,
-    flipCard: func.isRequired,
-    touchCard: func.isRequired,
-    beginDrag: func.isRequired,
-    endAllDrags: func.isRequired
-  },
-
-  getSvgStyle: function () {
-    return {
-      backgroundColor: '#f0f0f0',
-      position: 'absolute'
-    }
-  },
-
-  onDragOver: function (e) {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
+    players: array.isRequired,
+    interactions: array.isRequired
   },
 
   render: function () {
+    const { cards, players, interactions } = this.props
+
     return (
-      <div
-        width='100%'
-        height='100%'
-        style={ this.getSvgStyle() }
-        onDragOver={ this.onDragOver }>
-        { this.renderCards(this.props.cards) }
-      </div>
+      <svg
+        width='900px'
+        height='900px'
+        className='board'
+        viewBox='0 0 1920 900'
+        >
+        <g>
+          { this.renderCards(cards, players, interactions) }
+        </g>
+        <g>
+          <text>TODO: Cards in hand</text>
+        </g>
+        <g>
+          <text>TODO: Cards somewhere</text>
+        </g>
+      </svg>
     )
   },
 
-  renderCards: function(cards) {
+  renderCards: function (cards, players, interactions) {
     return cards.map((card, idx) => {
+      const interaction = _.find(interactions, { cardUuid: card.uuid })
       return (
         <Card
           key={ card.uuid }
+          heldBy={
+            interaction
+              ? _.find(players, { id: interaction.playerUuid })
+              : undefined
+          }
           card={ card }
-          moveCard={ this.props.moveCard }
-          flipCard={ this.props.flipCard }
-          touchCard={ this.props.touchCard }
-          beginDrag={ this.props.beginDrag }
-          endAllDrags={ this.props.endAllDrags }
           />
       )
     })
