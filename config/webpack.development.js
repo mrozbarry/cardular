@@ -7,7 +7,7 @@ module.exports = {
 
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, '..', 'client', 'game', 'index.js')
+    path.join(__dirname, '..', 'client', 'router', 'index.js'),
   ],
 
   output: {
@@ -27,7 +27,9 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      { test: /\.css$/i, loader: 'style-loader!css-loader' }
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.json$/, loader: 'json' },
+      { test: /\.html$/, loader: 'html' }
     ]
   },
   resolve: {
@@ -36,11 +38,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      inject: 'head'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'admin.html',
-      inject: 'head'
+      inject: 'head',
+      template: path.join(__dirname, '..', 'templates', 'index.html')
     }),
     new Webpack.HotModuleReplacementPlugin(),
     new Webpack.optimize.OccurenceOrderPlugin(),
