@@ -1,17 +1,15 @@
 import React from 'react'
+import _ from 'lodash'
 
-import ProfileList from './components/ProfileList'
+import CreateGame from './components/CreateGame'
+import JoinGame from './components/JoinGame'
 
-const { object, array, func, string } = React.PropTypes
+const { object, array, string } = React.PropTypes
 
 const Join = React.createClass({
   propTypes: {
     database: object.isRequired,
     profiles: array.isRequired,
-    addProfile: func.isRequired,
-    updateProfile: func.isRequired,
-    selectProfile: func.isRequired,
-    removeProfile: func.isRequired,
     profileId: string
   },
 
@@ -21,21 +19,85 @@ const Join = React.createClass({
     }
   },
 
+  emptyGame: function () {
+    return this.props.database
+      .child('games')
+      .push()
+  },
+
+  createAdmin: function (gameId, profileId) {
+    return this.props.database
+      .child('admins')
+      .push({
+        profileId: profileId,
+        gameId: gameId
+      })
+  },
+
+  profileNameStyle: function (profile) {
+    return {
+      color: [
+        'rgb(',
+        [profile.colour.r, profile.colour.g, profile.colour.b].join(', '),
+        ')'
+      ].join('')
+    }
+  },
+
   render: function () {
-    // const { games } = this.state
+    const { profiles, profileId } = this.props
+    const { games } = this.state
 
     return (
       <div className='container'>
-        <ProfileList
-          profiles={ this.props.profiles }
-          profileId={ this.props.profileId }
-          addProfile={ this.props.addProfile }
-          updateProfile={ this.props.updateProfile }
-          selectProfile={ this.props.selectProfile }
-          removeProfile={ this.props.removeProfile }
-          />
-        <div>Join game in list</div>
-        <div>Join game with direct id</div>
+        { this.renderGreeting(profiles, profileId) }
+        { this.renderActions(games, profiles, profileId) }
+      </div>
+    )
+  },
+
+  renderGreeting: function (profiles, profileId) {
+    const profile = _.find(profiles, { id: profileId })
+
+    if (!profile) {
+      return (
+        <div>
+          <h1>Hello Stranger!</h1>
+          <p>
+            Looks like you're new here, so why don't you start by <a href='/profiles'>making a profile</a>!
+          </p>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h1>Hello <span style={ this.profileNameStyle(profile) }>{ profile.name }</span> <a href='/profiles' title='Edit or Change Profile'><i className='material-icons'>contacts</i></a></h1>
+        </div>
+      )
+    }
+  },
+
+  renderActions: function (games, profiles, profileId) {
+    const profile = _.find(profiles, { id: profileId })
+    if (!profile) {
+      return null
+    }
+
+    return (
+      <div className='row'>
+        <div className='col m12 l6'>
+          <JoinGame
+            games={ games }
+            />
+        </div>
+
+        <div className='col m12 l6'>
+          <CreateGame
+            emptyGame={ this.emptyGame }
+            createAdmin={ this.createAdmin }
+            profile={ profile }
+            />
+        </div>
       </div>
     )
   }
