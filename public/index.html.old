@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cardular: Standard52 Deck</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <h1>Welcome to Cardular</h1>
+          <h4>Current State: <span class="red-text">Unavailable</span></h4>
+          <p>
+            Cardular is a modern way to play your favorite card games.  This is a free, no-bound-rules way to play cards with friends over the internet.  Games are persistent, and profiles are tied to your browser so you can come back to your game later.
+          </p>
+          <p>
+            This isn't just about the standard 52 card deck; you can also create your own custom decks and use those!  Why not play <a href="https://cardsagainsthumanity.com/">Cards Against Humanity</a>, <a href="http://mtgjson.com/sets.html">Magic: The Gathering</a>, or <a href="http://www.pokemon.com/us/pokedex/">Pokémon</a>.
+          </p>
+          <p>
+            Cardular will always be free to play, and free to host.  Cardular is built with free (or free-tiered) technologies, meaning if you want to host your own server, you can do it without spending a dime.
+          </p>
+          <p>
+            Cardular uses the latest web technologies, so make sure you use a modern browser that supports HTML5.
+          </p>
+        </div>
+
+        <div class="col m12 l6">
+          <h3>Create a Game</h3>
+          <p>
+            Create a public or private game.  Don't worry, even with public games, you can control who is allowed to interact with the board.
+          </p>
+          <a class="waves-effect waves-light btn-large">Create!</a>
+        </div>
+
+        <div class="col m12 l6">
+          <h3>Join a Game</h3>
+          <p>
+            Join a game.  You'll either need to know the secret key of the game, or browse a list of public games.  The game owner will have to accept you as a player.
+          </p>
+          <a class="waves-effect waves-light btn-large">Join!</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h2>Available Sets</h2>
+          <p>
+            Sets are a way of expressing a set of card decks that are related.  For instance, to play Go Fish, you'd just need a single standard 52 card deck with Hearts, Diamonds, Clubs, and Spades, each containing Ace through King, and optionally Jokers.
+          </p>
+          <p>
+            Sets are defined using a <code>set.json</code> file which describes the number of decks in a set, and some loose rules of how players should interact with them
+          </p>
+        </div>
+
+        <div class="col s4">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                <a href="standard52/set.json">Standard52</a>
+              </span>
+              <p>
+                This is your standard 52 card deck.  Cards downloaded from <a href="http://wheels-cards.wc.lt/">http://wheels-cards.wc.lt/</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+</html>

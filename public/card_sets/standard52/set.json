@@ -1,0 +1,85 @@
+{
+  "uuid": "c1ce32d1-27e0-4d06-a887-0fe32030d23a",
+  "name": "Standard 52 Card, wheels-cards.wc.lt",
+  "decks": {
+    "standard52": {
+      "uuid": "e24b2d4c-0144-4475-8642-458a196ed70b",
+      "size": [196, 274],
+      "back": "_Back.png",
+      "cards": {
+        "ca": "Clubs 1.png",
+        "c2": "Clubs 2.png",
+        "c3": "Clubs 3.png",
+        "c4": "Clubs 4.png",
+        "c5": "Clubs 5.png",
+        "c6": "Clubs 6.png",
+        "c7": "Clubs 7.png",
+        "c8": "Clubs 8.png",
+        "c9": "Clubs 9.png",
+        "c10": "Clubs 10.png",
+        "cj": "Clubs 11.png",
+        "cq": "Clubs 12.png",
+        "ck": "Clubs 13.png",
+
+        "sa": "Spades 1.png",
+        "s2": "Spades 2.png",
+        "s3": "Spades 3.png",
+        "s4": "Spades 4.png",
+        "s5": "Spades 5.png",
+        "s6": "Spades 6.png",
+        "s7": "Spades 7.png",
+        "s8": "Spades 8.png",
+        "s9": "Spades 9.png",
+        "s10": "Spades 10.png",
+        "sj": "Spades 11.png",
+        "sq": "Spades 12.png",
+        "sk": "Spades 13.png",
+
+        "ha": "Hearts 1.png",
+        "h2": "Hearts 2.png",
+        "h3": "Hearts 3.png",
+        "h4": "Hearts 4.png",
+        "h5": "Hearts 5.png",
+        "h6": "Hearts 6.png",
+        "h7": "Hearts 7.png",
+        "h8": "Hearts 8.png",
+        "h9": "Hearts 9.png",
+        "h10": "Hearts 10.png",
+        "hj": "Hearts 11.png",
+        "hq": "Hearts 12.png",
+        "hk": "Hearts 13.png",
+
+        "da": "Diamonds 1.png",
+        "d2": "Diamonds 2.png",
+        "d3": "Diamonds 3.png",
+        "d4": "Diamonds 4.png",
+        "d5": "Diamonds 5.png",
+        "d6": "Diamonds 6.png",
+        "d7": "Diamonds 7.png",
+        "d8": "Diamonds 8.png",
+        "d9": "Diamonds 9.png",
+        "d10": "Diamonds 10.png",
+        "dj": "Diamonds 11.png",
+        "dq": "Diamonds 12.png",
+        "dk": "Diamonds 13.png"
+      },
+      "rules": {
+        "stack": {
+          "minCards": 2,
+          "maxCards": false,
+          "canCut": true,
+          "canShuffle": true,
+          "canMove": true,
+          "canRotate": true
+        },
+        "card": {
+          "canFlip": true,
+          "canMove": true,
+          "canRotate": true,
+          "canPutInHand": true,
+          "canStack": true
+        }
+      }
+    }
+  }
+}
