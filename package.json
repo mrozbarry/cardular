@@ -5,12 +5,13 @@
   "main": "public/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/babel-node server/index.js"
+    "start": "node server/index.js"
   },
   "author": "Alex Barry",
   "license": "MIT",
   "peerDependencies": {
-    "babel-cli": "^6.4.5"
+    "firebase-tools": "*",
+    "firebase-bolt": "*"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
