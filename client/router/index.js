@@ -1,5 +1,4 @@
 import React from 'react'
-import Firebase from 'firebase'
 import ReactDOM from 'react-dom'
 import App from './App'
 
@@ -17,13 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.createElement('div')
   document.body.appendChild(container)
 
-  const firebase = new Firebase([
-    'https://',
-    firebaseConf.firebase,
-    '.firebaseio.com'
-  ].join(''))
-
   mountRouter({
-    database: firebase
+    config: firebaseConf
   }, container)
 })
