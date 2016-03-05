@@ -8,7 +8,7 @@ module.exports = {
 
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(ROOT, 'client', 'router', 'index.js'),
+    path.join(ROOT, 'client', 'index.js'),
   ],
 
   output: {
@@ -36,12 +36,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css'],
     root: [
-      path.join(ROOT, 'client', 'router'),
-      path.join(ROOT, 'client', 'shared'),
-      path.join(ROOT, 'client', 'profiles'),
-      path.join(ROOT, 'client', 'join'),
-      path.join(ROOT, 'client', 'game'),
-      path.join(ROOT, 'client', 'admin')
+      path.join(ROOT, 'client')
     ]
   },
   plugins: [

@@ -35,12 +35,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css'],
     root: [
-      path.join(ROOT, 'client', 'router'),
-      path.join(ROOT, 'client', 'shared'),
-      path.join(ROOT, 'client', 'profiles'),
-      path.join(ROOT, 'client', 'join'),
-      path.join(ROOT, 'client', 'game'),
-      path.join(ROOT, 'client', 'admin')
+      path.join(ROOT, 'client')
     ]
   },
   plugins: [
