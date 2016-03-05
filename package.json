@@ -5,8 +5,7 @@
   "main": "public/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js",
-    "dev": "webpack-dev-server --inline --progress config/webpack.hmr.js"
+    "start": "webpack-dev-server --inline --progress --config config/webpack.hmr.js --host 0.0.0.0 --port 3000"
   },
   "author": "Alex Barry",
   "license": "MIT",
@@ -38,18 +37,15 @@
     "react-addons-test-utils": "^0.14.6",
     "react-dom": "^0.14.3",
     "react-mini-router": "^2.0.0",
-    "react-transform-display-name": "^0.2.0",
+    "babel-plugin-transform-react-display-name": "*",
     "react-transform-hmr": "^1.0.1",
     "standard": "^5.4.1",
     "standard-loader": "^2.0.0",
     "style-loader": "^0.13.0",
     "superagent": "^1.7.2",
-    "uuid": "^2.0.1",
-    "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.6.4"
+    "uuid": "^2.0.1"
   },
   "dependencies": {
-    "express": "^4.13.4",
     "webpack": "^1.12.13"
   }
 }

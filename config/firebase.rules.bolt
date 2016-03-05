@@ -20,7 +20,7 @@ type User {
   index() { ['uid', 'name'] }
 
 
-  uid: StringID,
+  id: StringID,
   name: String,
   gamesJoined: String[]
 }

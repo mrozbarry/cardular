@@ -11,6 +11,7 @@ import Join from 'views/Join'
 import Profiles from 'views/Profiles'
 // import Game from 'views/Game'
 import Admin from 'views/Admin'
+import SignIn from 'views/SignIn'
 
 const { object } = React.PropTypes
 
@@ -32,13 +33,18 @@ export default React.createClass({
   },
 
   getInitialState: function () {
-    const profiles = JSON.parse(window.localStorage.cardularProfiles || '[]')
-    const profileId = window.localStorage.cardularProfileId || null
-
     return {
-      profiles: profiles,
-      profileId: profileId
+      auth: null,
+      authError: null
     }
+  },
+
+  signIn: function (err, auth) {
+    console.log('App:signIn', arguments)
+    this.setState({
+      auth: auth,     // null or { auth: sdkjbdskjfg, uid: sdksfjgf }
+      authError: err  // "Error: Not allowed to sign in"
+    })
   },
 
   componentWillMount: function () {
@@ -146,6 +152,19 @@ export default React.createClass({
     )
   },
 
+  renderSignIn: function () {
+    const { auth, authError } = this.state
+
+    return (
+      <SignIn
+        signIn={ this.signIn }
+        database={ this.database }
+        auth={ auth }
+        authError={ authError }
+        />
+    )
+  },
+
   notFound: function (path) {
     console.warn('404 not found', path)
 
@@ -155,6 +174,7 @@ export default React.createClass({
   render: function () {
     return (
       <div>
+        { this.renderSignIn() }
         { this.renderCurrentRoute() }
       </div>
     )

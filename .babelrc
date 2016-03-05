@@ -7,8 +7,6 @@
     "development": {
       "plugins": [["react-transform", {
         "transforms": [{
-            "transform": "react-transform-display-name"
-          },{
             "transform": "react-transform-hmr",
             "imports": ["react"],
             "locals": ["module"]
