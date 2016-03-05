@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
-const firebaseConf = require('../../firebase.json')
+const firebaseConf = require('../firebase.json')
 
 const mountRouter = (props, dom) => {
   props = props || {}

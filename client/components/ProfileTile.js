@@ -1,9 +1,7 @@
 import React from 'react'
 import Please from 'pleasejs'
-import ReactMiniRouter from 'react-mini-router'
-import _ from 'lodash'
 
-const { array, func, bool } = React.PropTypes
+const { object, array, func, bool } = React.PropTypes
 
 const ProfileTile = React.createClass({
   propTypes: {

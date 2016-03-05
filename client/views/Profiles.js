@@ -1,4 +1,6 @@
 import React from 'react'
+import ReactMiniRouter from 'react-mini-router'
+import Please from 'pleasejs'
 
 import ProfileList from 'components/ProfileList'
 
@@ -51,7 +53,6 @@ const Profiles = React.createClass({
       this.props.removeProfile(profile)
     }
   },
-
 
   render: function () {
     return (

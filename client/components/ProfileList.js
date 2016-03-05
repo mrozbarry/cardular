@@ -1,7 +1,7 @@
 import React from 'react'
-import Please from 'pleasejs'
-import ReactMiniRouter from 'react-mini-router'
 import _ from 'lodash'
+
+import ProfileTile from './ProfileTile'
 
 const { array, func, string } = React.PropTypes
 
@@ -15,27 +15,30 @@ const ProfileList = React.createClass({
   },
 
   render: function () {
-    const { profiles, profileId } = this.props
+    const { profiles, updateProfile, selectProfile, removeProfile, profileId } = this.props
 
     return (
       <div className='row'>
         { this.renderProfiles(
           profiles,
-          profileId
+          profileId,
+          updateProfile,
+          selectProfile,
+          removeProfile
         ) }
       </div>
     )
   },
 
-  renderProfiles: function (profiles, profileId) {
+  renderProfiles: function (profiles, profileId, updateProfile, selectProfile, removeProfile) {
     return profiles.map((profile) => {
       return (
         <ProfileTile
           profile={ profile }
           isActive={ profile.id === profileId }
-          updateProfile={ _.partial( updateProfile, profile ) }
-          selectProfile={ _.partial( selectProfile, profile ) }
-          removeProfile={ _.partial( removeProfile, profile ) }
+          updateProfile={ _.partial(updateProfile, profile) }
+          selectProfile={ _.partial(selectProfile, profile) }
+          removeProfile={ _.partial(removeProfile, profile) }
           />
       )
     })
