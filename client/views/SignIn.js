@@ -8,15 +8,19 @@ const SignIn = React.createClass({
     signIn: func.isRequired,
     database: object.isRequired,
     auth: object,
-    authError: object // { name: 'Error', message: 'The thing youdid wrong'}
+    authError: object
   },
 
-  signInAnonymously: function (database, signIn, e) {
+  signInWithFacebook: function (database, signIn, e) {
     e.preventDefault()
 
-    database.authAnonymously(signIn, {
-      remember: 'sessionOnly'
-    })
+    database.authWithOAuthPopup('facebook', signIn)
+  },
+
+  signInWithGoogle: function (database, signIn, e) {
+    e.preventDefault()
+
+    database.authWithOAuthPopup('google', signIn)
   },
 
   render: function () {
@@ -26,10 +30,54 @@ const SignIn = React.createClass({
       return null
     }
 
+    return this.renderSignIn(signIn, database, auth, authError)
+  },
+
+  renderSignIn: function (signIn, database, auth, authError) {
     return (
-      <div>
-        <a className='btn' href='#' onClick={ _.partial(this.signInAnonymously, database, signIn) }>Sign In Anonymously</a>
-        { this.renderAuthError(authError) }
+      <div className='sign-in__overlay'>
+        <div className='sign-in'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col s12'>
+                <h3>Sign in to Play</h3>
+              </div>
+              { this.renderAuthOption(
+                signIn,
+                'Sign-in with Google',
+                'red darken-1 white-text',
+                this.signInWithGoogle,
+                database
+              ) }
+              { this.renderAuthOption(
+                signIn,
+                'Sign-in with Facebook',
+                'indigo white-text',
+                this.signInWithFacebook,
+                database
+              ) }
+              <div className='col s12'>
+                { this.renderAuthError(authError) }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  renderAuthOption: function (signIn, text, btnStyle, click, database) {
+    const onClick = _.partial(click, database, signIn)
+
+    return (
+      <div className='col s12 m6'>
+        <a
+          className={ ['btn'].concat(btnStyle).join(' ') }
+          href='#'
+          onClick={ onClick }
+          >
+          { text }
+        </a>
       </div>
     )
   },
@@ -40,10 +88,13 @@ const SignIn = React.createClass({
     }
 
     return (
-      <span>
-        <strong>{ err.name }: </strong>
-        { err.message }
-      </span>
+      <div>
+        <hr />
+        <span>
+          <strong>{ err.name }: </strong>
+          { err.message }
+        </span>
+      </div>
     )
   }
 })

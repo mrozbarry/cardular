@@ -106,6 +106,7 @@ const ProfileIcon = React.createClass({
       <div>
 
         <PulloutProfile
+          onProfile={ this.onProfile }
           signOut={ this.props.signOut }
           getStyle={ this.getStyle }
           user={ user }
@@ -130,20 +131,6 @@ const ProfileIcon = React.createClass({
         user={ this.props.user }
         />
     )
-  },
-
-  renderServerHistory: function () {
-    return _.range(1, 5).map((hoursAgo) => {
-      const hourWord = hoursAgo === 1 ? 'hour' : 'hours'
-      return (
-        <li key={ hoursAgo } className='collection-item'>
-          SERVER_NAME (last joined { hoursAgo } { hourWord } ago)
-          <a href='#' className='secondary-content'>
-            <i className='material-icons'>open_in_new</i>
-          </a>
-        </li>
-      )
-    })
   }
 })
 

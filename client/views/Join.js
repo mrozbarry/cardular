@@ -1,17 +1,22 @@
 import React from 'react'
-import _ from 'lodash'
+
+import SubscribeMixin from 'mixins/SubscribeMixin'
 
 import CreateGame from 'components/CreateGame'
 import JoinGame from 'components/JoinGame'
 
-const { object, array, string } = React.PropTypes
+const { object, bool } = React.PropTypes
 
 const Join = React.createClass({
   propTypes: {
     database: object.isRequired,
-    profiles: array.isRequired,
-    profileId: string
+    isSignedIn: bool.isRequired,
+    user: object
   },
+
+  mixins: [
+    SubscribeMixin
+  ],
 
   getInitialState: function () {
     return {
@@ -44,50 +49,39 @@ const Join = React.createClass({
     }
   },
 
+  componentWillMount: function () {
+    const { database } = this.props
+  },
+
+  componentWillUnmount: function () {
+  },
+
   render: function () {
-    const { profiles, profileId } = this.props
+    const { isSignedIn } = this.props
     const { games } = this.state
 
     return (
       <div className='container'>
-        { this.renderGreeting(profiles, profileId) }
-        { this.renderActions(games, profiles, profileId) }
+        <div className='row'>
+          <div className='col s12'>
+            <h1>Welcome to Cardular</h1>
+            <p>
+              Feel free to join or create a server
+            </p>
+          </div>
+        </div>
+        { this.renderActions(games, isSignedIn) }
       </div>
     )
   },
 
-  renderGreeting: function (profiles, profileId) {
-    const profile = _.find(profiles, { id: profileId })
-
-    if (!profile) {
-      return (
-        <div>
-          <h1>Hello Stranger!</h1>
-          <p>
-            Looks like you're new here, so why don't you start by <a href='/profiles'>making a profile</a>!
-          </p>
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <h1>Hello <span style={ this.profileNameStyle(profile) }>{ profile.name }</span> <a href='/profiles' title='Edit or Change Profile'><i className='material-icons'>contacts</i></a></h1>
-        </div>
-      )
-    }
-  },
-
-  renderActions: function (games, profiles, profileId) {
-    const profile = _.find(profiles, { id: profileId })
-    if (!profile) {
-      return null
-    }
-
+  renderActions: function (games, isSignedIn) {
     return (
       <div className='row'>
         <div className='col m12 l6'>
           <JoinGame
             games={ games }
+            isSignedIn={ isSignedIn }
             />
         </div>
 
@@ -95,7 +89,7 @@ const Join = React.createClass({
           <CreateGame
             emptyGame={ this.emptyGame }
             createAdmin={ this.createAdmin }
-            profile={ profile }
+            isSignedIn={ isSignedIn }
             />
         </div>
       </div>
