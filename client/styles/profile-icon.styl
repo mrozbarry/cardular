@@ -1,0 +1,62 @@
+height = 64px
+border-width = 4px
+avatar-size = height + (border-width * 2)
+avatar-padding = 2px
+avatar-margins = 5px
+full-width = 256px
+
+.profile
+  &-mini
+    position: fixed
+    top: 0
+    right: (avatar-size + ((avatar-padding + avatar-margins) * 2)) - full-width
+    width: full-width
+    height: avatar-size + ((avatar-margins + avatar-margins) * 2)
+    z-index: 99
+    transition: right 0.3s ease-in-out
+
+    &:hover
+      right: 0
+      background-color: rgba(255,255,255,0.75)
+
+    &__profile-pic
+      width: avatar-size - (avatar-padding * 2)
+      height: avatar-size - (avatar-padding * 2)
+      float: left
+      border-radius: (avatar-size / 2)
+      margin: avatar-margins
+
+    &__name
+      font-size: 1.5rem
+      margin-left: 5px
+      text-align: right
+      padding: 0 0.5rem
+      padding-top: border-width * 2
+
+    &__actions
+      width: auto
+      font-size: 1rem
+      text-align: right
+      padding: 0 0.5rem
+
+      & a
+        padding: 0 0.5rem
+
+  &-edit
+    position: fixed
+    width: 50%
+    max-height: 80%
+    top: 10%
+    left: 50%
+    margin-left: -(@width / 2)
+    z-index: 999
+    overflow-y: auto
+    padding-left: 1rem
+    padding-right: 1rem
+
+    &__colour
+      position: relative
+      width: 225px
+      overflow-x: hidden
+      overflow-y: visible
+      margin: 0 auto
