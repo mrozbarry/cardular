@@ -27,13 +27,13 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      { test: /\.css$/i, loader: 'style-loader!css-loader' },
+      { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' },
       { test: /\.json$/, loader: 'json' },
       { test: /\.html$/, loader: 'html' }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css'],
+    extensions: ['', '.js', '.jsx', '.styl'],
     root: [
       path.join(ROOT, 'client')
     ]

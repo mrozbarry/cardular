@@ -4,10 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ROOT = path.join(__dirname, '..')
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-eval-source-map',
 
   entry: [
-    'webpack-hot-middleware/client?reload=true',
     path.join(ROOT, 'client', 'index.js'),
   ],
 
@@ -20,7 +19,7 @@ module.exports = {
   module: {
     preLoaders: [{
       test: /\.jsx?$/,
-      loader: 'standard',
+      loader: 'babel',
       exclude: /(node_modules|bower_components)/
     }],
     loaders: [
@@ -28,13 +27,13 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' },
       { test: /\.json$/, loader: 'json' },
       { test: /\.html$/, loader: 'html' }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css'],
+    extensions: ['', '.js', '.jsx', '.styl'],
     root: [
       path.join(ROOT, 'client')
     ]
