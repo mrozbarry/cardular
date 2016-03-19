@@ -1,37 +1,34 @@
 {
   "name": "cardular",
-  "version": "0.0.1",
+  "version": "0.0.1alpha",
   "description": "A multiplayer framework for playing cards",
-  "main": "public/index.html",
+  "public": false,
   "scripts": {
-    "test": "mocha --opts spec/mocha.conf spec/**/*.spec.js",
-    "test:rules": "firebase-bolt config/rules.bolt --output rules.json; ./node_modules/.bin/targaryen --verbose rules.json targaryen/test.json; rm rules.json",
-    "start": "webpack-dev-server --inline --progress --quiet --no-info --config config/webpack.hmr.js --host 0.0.0.0 --port 3000"
+    "test": "node_modules/.bin/mocha --opts spec/mocha.conf spec/**/*.spec.js",
+    "test:rules": "node_modules/.bin/firebase-bolt config/rules.bolt --output rules.json; ./node_modules/.bin/targaryen --verbose rules.json targaryen/test.json; rm rules.json",
+    "start": "webpack-dev-server --inline --config config/webpack.hmr.js --host 0.0.0.0 --port 3000",
+    "init:firebase": "node_modules/.bin/firebase init",
+    "deploy:rules": "node_modules/.bin/firebase deploy:rules"
   },
   "author": "Alex Barry",
   "license": "MIT",
-  "peerDependencies": {
-    "firebase-tools": "*",
-    "firebase-bolt": "*",
+  "optionalDevDependencies": {
     "webpack-dev-server": "*"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
     "babel-loader": "^6.2.1",
     "babel-plugin-react-transform": "^2.0.0",
-    "babel-plugin-transform-react-display-name": "*",
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-polyfill": "^6.3.14",
-    "babel-preset-es2015": "^6.3.13",
     "babel-preset-node5": "^11.0.0",
     "babel-preset-react": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
     "chai": "^3.4.1",
     "css-loader": "^0.23.1",
-    "firebase": "^2.4.1",
+    "firebase-tools": "*",
+    "firebase-bolt": "*",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.8.1",
-    "jdenticon": "^1.3.2",
     "jsdom": "^7.2.2",
     "json-loader": "^0.5.4",
     "lodash": "^4.0.0",
@@ -47,13 +44,10 @@
     "standard-loader": "^2.0.0",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
-    "superagent": "^1.7.2",
-    "uuid": "^2.0.1"
+    "targaryen": "^2.0.0"
   },
   "dependencies": {
+    "firebase": "^2.4.1",
     "webpack": "^1.12.13"
-  },
-  "optionalDependencies": {
-    "targaryen": "^2.0.0"
   }
 }
