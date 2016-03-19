@@ -1,0 +1,79 @@
+// --- Helpers
+
+isSignedIn() { auth != null }
+isCurrentUser(userId) { isSignedIn() && (auth.uid == userId) }
+
+// --- Custom Types
+
+type UserName extends String {
+  validate() { this.length > 3 && this.length <= 24 }
+}
+
+type Colour {
+  r: Number,
+  g: Number,
+  b: Number,
+  a: Number
+}
+
+type User {
+  validate() { key() == this.id }
+
+  id: String,
+  name: String,
+  photoUrl: String | Null,
+  colour: Colour
+}
+
+type Player {
+  validate() { key() == this.id }
+
+  id: String,
+  userId: String,
+  gameId: String
+}
+
+type Game {
+  validate() { key() == this.id }
+
+  id: StringID,
+  userId: StringID,
+  name: String,
+  players: Player[] | Null
+}
+
+// --- Paths
+
+path / {
+  write() { false }
+
+  /activity/{userId} {
+    read() { isSignedIn() }
+    create() { isCurrentUser(userId) }
+    update() { isCurrentUser(userId) }
+  }
+
+  /users {
+    write() { isSignedIn() }
+
+    /{userId} is User {
+      read() { isSignedIn() }
+      create() { isSignedIn() }
+      update() { isCurrentUser(userId) }
+      delete() { false }
+
+      index() { ['id', 'name'] }
+    }
+  }
+
+  /* /games { */
+  /*   read() { true } */
+  /*   write() { isSignedIn() } */
+  /*  */
+  /*   path /{gameId} is Game { */
+  /*     create() { isSignedIn() } */
+  /*     update() { prior(this.userId) == auth.uid } */
+  /*     delete() { prior(this.userId) == auth.uid } */
+  /*   } */
+  /* } */
+}
