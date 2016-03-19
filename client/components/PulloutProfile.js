@@ -4,6 +4,7 @@ const { func, object } = React.PropTypes
 
 const PulloutProfile = React.createClass({
   propTypes: {
+    onProfile: func.isRequired,
     signOut: func.isRequired,
     getStyle: func.isRequired,
     user: object
@@ -34,6 +35,6 @@ const PulloutProfile = React.createClass({
       </div>
     )
   }
-}
+})
 
 export default PulloutProfile

@@ -1,6 +1,12 @@
 import React from 'react'
 
+const { bool } = React.PropTypes
+
 const JoinGame = React.createClass({
+  propTypes: {
+    isSignedIn: bool.isRequired
+  },
+
   getInitialState: function () {
     return {
       gameId: ''
@@ -19,6 +25,7 @@ const JoinGame = React.createClass({
   },
 
   render: function () {
+    const { isSignedIn } = this.props
     return (
       <div className='card'>
         <div className='card-content'>
@@ -38,6 +45,7 @@ const JoinGame = React.createClass({
                 placeholder='-JRHTHaIs-jNPLXOQivY'
                 value={ this.state.gameId }
                 onChange={ this.onGameIdChange }
+                disabled={ isSignedIn ? '' : 'disabled' }
                 />
             </div>
           </div>
