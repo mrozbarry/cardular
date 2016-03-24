@@ -10,9 +10,18 @@ const SubscribeMixin = {
   subscribe: function (ref, event, callback) {
     ref.on(event, callback)
 
-    this.unsubscribeCallbacks.push(() => {
+    const cancel = () => {
       ref.off(event, callback)
-    })
+    }
+
+    this.unsubscribeCallbacks.push(cancel)
+
+    // Return a wrapped version of cancel that also removes it from the
+    // callback array.
+    return () => {
+      cancel()
+      this.unsubscribeCallbacks = _.omit(this.unsubscribeCallbacks, cancel)
+    }
   },
 
   unsubscribeAll: function () {
