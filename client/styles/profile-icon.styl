@@ -13,8 +13,9 @@ full-width = 256px
     width: full-width
     height: avatar-size + ((avatar-margins + avatar-margins) * 2)
     z-index: 99
-    transition: right 0.3s ease-in-out
+    transition: all 0.3s ease-in-out
 
+    &--show,
     &:hover
       right: 0
       background-color: rgba(255,255,255,0.75)
@@ -55,7 +56,6 @@ full-width = 256px
     padding-right: 1rem
 
     &__colour
-      position: relative
       width: 225px
       overflow-x: hidden
       overflow-y: visible

@@ -12,7 +12,7 @@ Multiplayer interactive card games for the masses.
 
 ```bash
 npm install
-npm install -g webpack-dev-server # Optionally without -g, but global install will make life easier
+npm prune # Optional; if you're updating, it's probably a good idea
 ```
 
 ### Setup

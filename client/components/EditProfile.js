@@ -73,7 +73,10 @@ const EditProfile = React.createClass({
           </a>
         </div>
 
-        <h4>You</h4>
+        <h4>You ({ user.name })</h4>
+        <p>
+          All your user fields are editable, including the colour picker.
+        </p>
         <div className='divider' />
 
         <div className='center-align'>

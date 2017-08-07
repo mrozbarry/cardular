@@ -5,16 +5,13 @@
   "public": false,
   "scripts": {
     "test": "node_modules/.bin/mocha --opts spec/mocha.conf spec/**/*.spec.js",
-    "test:rules": "node_modules/.bin/firebase-bolt config/rules.bolt --output rules.json; ./node_modules/.bin/targaryen --verbose rules.json targaryen/test.json; rm rules.json",
-    "start": "webpack-dev-server --inline --config config/webpack.hmr.js --host 0.0.0.0 --port 3000",
+    "start": "node_modules/.bin/webpack-dev-server --inline --config config/webpack.hmr.js --host 0.0.0.0 --port 3000",
     "init:firebase": "node_modules/.bin/firebase init",
     "deploy:rules": "node_modules/.bin/firebase deploy:rules"
   },
   "author": "Alex Barry",
   "license": "MIT",
-  "optionalDevDependencies": {
-    "webpack-dev-server": "*"
-  },
+  "optionalDevDependencies": {},
   "devDependencies": {
     "babel-core": "^6.4.0",
     "babel-loader": "^6.2.1",
@@ -25,8 +22,8 @@
     "babel-preset-react": "^6.3.13",
     "chai": "^3.4.1",
     "css-loader": "^0.23.1",
-    "firebase-tools": "*",
     "firebase-bolt": "*",
+    "firebase-tools": "*",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.8.1",
     "jsdom": "^7.2.2",
@@ -44,7 +41,8 @@
     "standard-loader": "^2.0.0",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
-    "targaryen": "^2.0.0"
+    "targaryen": "^2.0.0",
+    "webpack-dev-server": "*"
   },
   "dependencies": {
     "firebase": "^2.4.1",

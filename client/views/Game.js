@@ -1,68 +1,182 @@
 import React from 'react'
-import uuid from 'uuid'
-import _ from 'lodash'
 
-import SetLoaderMixin from 'components/mixins/SetLoaderMixin'
-import CardMixin from 'components/mixins/CardMixin'
+import SideBar from '../components/SideBar'
 
-import Board from 'components/Board'
-import ContextMenu from 'components/ContextMenu'
+import SubscribeMixin from '../mixins/SubscribeMixin'
 
-const { array, object } = React.PropTypes
+const { object, string } = React.PropTypes
 
-export default React.createClass({
+const Game = React.createClass({
   propTypes: {
-    sets: array.isRequired,
-    database: object.isRequired
+    database: object.isRequired,
+    gameId: string.isRequired,
+    user: object
   },
 
   mixins: [
-    SetLoaderMixin,
-    CardMixin
+    SubscribeMixin
   ],
 
   getInitialState: function () {
     return {
-      sets: [],
-      cards: [],
-      stacks: [],
-      interactions: [],
-      players: [],
-      me: {
-        uuid: null
-      }
+      game: null,
+      users: [],
+      messages: [],
+      playerPath: null
     }
   },
 
-  componentDidMount: function () {
-    this.loadSet('/assets/sets/standard52', (set) => {
-      const cards = _.reduce(['c', 's', 'h', 'd'], (cards, suit, suitIdx) => {
-        return cards.concat(_.map(['a', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'j', 'q', 'k'], (card, cardIdx) => {
-          const cardNumber = (suitIdx * 13) + cardIdx
-          const cardName = [suit, card].join('')
-          return this.newCard(set, 'standard52', cardName, { x: 0, y: 0 })
-        }))
-      }, [])
-      const startStack = this.newStack('Initial Deck', { x: 50, y: 600 }, cards)
-      this.setState({ stacks: [startStack] })
+  onUserValue: function (userSnapshot) {
+    const { users } = this.state
+    const user = userSnapshot.val()
+
+    const nextUsers = _.reject(users, { id: userSnapshot.key() })
+
+    if (user) {
+      this.setState({
+        users: nextUsers.concat(user)
+      })
+    } else {
+      this.setState({
+        users: nextUsers
+      })
+    }
+  },
+
+  getPlayersOfGame: function (game) {
+    if (!game || !game.players) {
+      return []
+    }
+
+    return _.values(game.players)
+  },
+
+  onGameValue: function (gameSnapshot) {
+    const { database, user } = this.props
+    const oldGame = this.state.game
+    const game = gameSnapshot.val()
+
+    this.setState({
+      game: game
+    }, () => {
+      const oldGamePlayers = this.getPlayersOfGame(oldGame)
+      const newGamePlayers = this.getPlayersOfGame(game)
+
+      const additionalPlayers = oldGame ?
+        _.intersection([oldGamePlayers, newGamePlayers]) :
+        newGamePlayers
+
+      const removePlayers = _.difference(
+        newGamePlayers,
+        additionalPlayers
+      )
+
+      _.each(additionalPlayers, (player) => {
+        if (!this.userSubscriptions[player.userId]) {
+          const userRef = database.child(`/users/${ player.userId }`)
+          this.userSubscriptions[player.userId] =
+            this.subscribe(userRef, 'value', this.onUserValue)
+        }
+      })
+
+      _.each(removePlayers, (player) => {
+        const unsubscribeFromUser = this.userSubscriptions[player.userId]
+        if (unsubscribeFromUser) {
+          unsubscribeFromUser()
+        }
+      })
     })
 
-    this.initializePlayer()
+  },
+
+  onMessageAdded: function (messageSnapshot) {
+    const { messages } = this.state
+    const message = messageSnapshot.val()
+
+    this.setState({
+      messages: messages.concat(message)
+    })
+  },
+
+  componentWillMount: function () {
+    this.userSubscriptions = {}
+  },
+
+  componentDidMount: function () {
+    const { database, gameId, user } = this.props
+
+    const gameRef = database
+      .child(`/games/${ gameId }`)
+
+    this.subscribe(gameRef, 'value', this.onGameValue)
+
+    const messagesRef = database
+      .child(`/messages/${ gameId }`)
+
+    this.subscribe(messagesRef, 'child_added', this.onMessageAdded)
+
+    // Write user as a player
+    const playerRef = gameRef.child('/players').push()
+    const playerId = playerRef.key()
+    playerRef
+      .set(user.id)
+      .then(() => {
+        this.setState({
+          playerPath: `/games/${ gameId }/players/${ playerId }`
+        })
+      })
+      .catch((err) => {
+        console.warn('--- FIREBASE ERROR ---')
+        console.info(err)
+        throw err
+      })
+  },
+
+  componentWillUnmount: function () {
+    const { database } = this.props
+    const { playerPath } = this.state
+
+    if (playerPath) {
+      database
+        .child(playerPath)
+        .set(null)
+    }
   },
 
   render: function () {
-    const { players, cards, interactions } = this.state
+    const { game } = this.state
+
+    if (!this.props.user || !game) {
+      return this.renderLoading()
+    }
+
     return (
       <div>
-        <Board
-          cards={ cards }
-          players={ players }
-          interactions={ interactions }
-          />
-        <ContextMenu
-          show={ false }
-          />
+        Game { game ? game.name : '???' }
+
+        <SideBar players={ this.state.players } />
+      </div>
+    )
+  },
+
+  renderLoading: function () {
+    return (
+      <div>
+        <h5>Loading user data and game</h5>
+        <div className="preloader-wrapper small active">
+          <div className="spinner-layer spinner-green-only">
+            <div className="circle-clipper left">
+              <div className="circle"></div>
+            </div><div className="gap-patch">
+              <div className="circle"></div>
+            </div><div className="circle-clipper right">
+              <div className="circle"></div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
 })
+
+export default Game

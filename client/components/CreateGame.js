@@ -7,13 +7,14 @@ const { func, object } = React.PropTypes
 
 const CreateGame = React.createClass({
   propTypes: {
-    emptyGame: func.isRequired,
-    createAdmin: func.isRequired
+    createGame: func.isRequired
   },
 
   createGame: function (e) {
     e.preventDefault()
-    console.info('STUB: createGame')
+    this.props.createGame().then((game) => {
+      ReactMiniRouter.navigate(`/games/${ game.id }`)
+    })
   },
 
   render: function () {

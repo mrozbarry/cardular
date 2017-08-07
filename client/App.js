@@ -9,9 +9,9 @@ import Please from 'pleasejs'
 import SubscribeMixin from 'mixins/SubscribeMixin.js'
 import UserMixin from 'mixins/UserMixin'
 
-import Join from 'views/Join'
+import Home from 'views/Home'
 import ProfileIcon from 'views/ProfileIcon'
-// import Game from 'views/Game'
+import Game from 'views/Game'
 import Admin from 'views/Admin'
 import SignIn from 'views/SignIn'
 
@@ -29,8 +29,8 @@ export default React.createClass({
   ],
 
   routes: {
-    '': 'renderJoin',
-    '/': 'renderJoin',
+    '': 'renderHome',
+    '/': 'renderHome',
     '/games/:id': 'renderGame',
     '/games/:id/admin': 'renderAdmin'
   },
@@ -46,8 +46,6 @@ export default React.createClass({
   onUserValue: function (auth, userSnapshot) {
     const user = userSnapshot.val()
 
-    console.log('onUserValue', auth, user)
-
     if (!user) {
       const newUser = {
         id: userSnapshot.key(),
@@ -55,7 +53,6 @@ export default React.createClass({
         photoUrl: this.getPhotoFromAuth(auth),
         colour: Object.assign({}, Please.make_color({format: 'rgb'})[0], { a: 1 })
       }
-      console.debug('User has not been created', newUser)
       userSnapshot.ref().set(newUser).catch((err) => {
         console.log('------------- ERROR', err)
       })
@@ -65,11 +62,9 @@ export default React.createClass({
   },
 
   onAuth: function (auth) {
-    console.warn('onAuth', auth)
     this.setState({ auth: auth, user: null }, () => {
       if (auth) {
         const id = this.getIdFromAuth(auth)
-        console.info('onAuth:afterState:subscribe', id)
         const callback = _.partial(this.onUserValue, auth)
         this.subscribe(
           this.database.child(`/users/${ id }`),
@@ -102,11 +97,16 @@ export default React.createClass({
     this.database.onAuth(this.onAuth)
   },
 
-  renderJoin: function () {
+
+  renderHome: function () {
     const { auth, user } = this.state
 
+    if (user === null) {
+      return null
+    }
+
     return (
-      <Join
+      <Home
         database={ this.database }
         isSignedIn={ auth !== null }
         user={ user }
@@ -115,8 +115,18 @@ export default React.createClass({
   },
 
   renderGame: function (gameId) {
+    const { user } = this.state
+
+    if (!user) {
+      return null
+    }
+
     return (
-      <div>TODO: Show a Game</div>
+      <Game
+        database={ this.database }
+        gameId={ gameId }
+        user={ user }
+        />
     )
   },
 

@@ -2,6 +2,8 @@
 
 isSignedIn() { auth != null }
 isCurrentUser(userId) { isSignedIn() && (auth.uid == userId) }
+isInitial(value) { prior(value) == null }
+initial(value, init) { value == (isInitial(value) ? init : prior(value)) }
 
 // --- Custom Types
 
@@ -25,26 +27,29 @@ type User {
   colour: Colour
 }
 
-type Player {
-  validate() { key() == this.id }
+type Message {
+  validate() { key() == this.id && this.userId.length > 0 && this.content.length > 0 }
 
   id: String,
   userId: String,
-  gameId: String
+  content: String
 }
 
 type Game {
   validate() { key() == this.id }
 
-  id: StringID,
-  userId: StringID,
+  id: String,
+  userId: String,
   name: String,
-  players: Player[] | Null
+  messages: Message[],
+  players: String[],
+  bans: String[],
+  createdAt: String
 }
 
 // --- Paths
-
 path / {
+  read() { true }
   write() { false }
 
   /activity/{userId} {
@@ -54,6 +59,7 @@ path / {
   }
 
   /users {
+    read() { isSignedIn() }
     write() { isSignedIn() }
 
     /{userId} is User {
@@ -66,14 +72,12 @@ path / {
     }
   }
 
-  /* /games { */
-  /*   read() { true } */
-  /*   write() { isSignedIn() } */
-  /*  */
-  /*   path /{gameId} is Game { */
-  /*     create() { isSignedIn() } */
-  /*     update() { prior(this.userId) == auth.uid } */
-  /*     delete() { prior(this.userId) == auth.uid } */
-  /*   } */
-  /* } */
+  /games {
+    index() { ['id', 'userId', 'name', 'createdAt'] }
+
+    /{gameId} is Game {
+      read() { true }
+      write() { isSignedIn() }
+    }
+  }
 }

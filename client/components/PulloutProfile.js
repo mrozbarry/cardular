@@ -10,7 +10,7 @@ const PulloutProfile = React.createClass({
     user: object
   },
 
-  onSignOut: function (signOut, e) {
+  onSignOut: function (e) {
     e.preventDefault()
     this.props.signOut()
   },
